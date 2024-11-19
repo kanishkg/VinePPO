@@ -8,7 +8,7 @@ local tokenizer = {
 
 
 local cd_inference_pipeline =
-    (import 'prompt_library/cd_basic.jsonnet')
+    (import 'prompt_library/cd_sft.jsonnet')
     + (import 'inference_strategies/tree/iid_expander.jsonnet')
     + (import 'inference_strategies/cot.jsonnet')
     + {
