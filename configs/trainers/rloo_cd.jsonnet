@@ -50,12 +50,12 @@ local ds_stage_2_w_cpu_optimizer = (import '../deepspeed/zero_2.jsonnet') + {
 
             learning_rate: 1e-6,
             weight_decay: 0.00,
-            warmup_ratio: 0.03,
+            warmup_ratio: 0.01,
 
             max_grad_norm: 1.0,
 
             dataloader_num_workers: 1,
-            dataloader_pin_memory: false,
+            dataloader_pin_memory: true,
 
             gradient_checkpointing: true,
             bf16: true,
@@ -70,7 +70,7 @@ local ds_stage_2_w_cpu_optimizer = (import '../deepspeed/zero_2.jsonnet') + {
 
         num_epochs_per_iteration: 1,
         cache_deepspeed_engines: true,
-        move_reference_model_to_cpu: true,
-        save_hf_critic_checkpoint: true,
+        move_reference_model_to_cpu: null,
+        save_hf_critic_checkpoint: null,
     },
 }
