@@ -13,7 +13,7 @@ from treetune.episode_generators.episode_generator_with_reward_function import (
     RewardFunction,
 )
 from treetune.logging_utils import get_logger
-from treetune.tasks import Task, GSM8K
+from treetune.tasks import Task, GSM8K, Countdown
 from treetune.tasks.math import MATH
 from treetune.tokenization_utils import Tokenizer
 
@@ -30,7 +30,7 @@ class MATHRewardFunction(RewardFunction):
         unfinished_response_penalty: float = -1.0,
         timeout: Optional[int] = None,
     ):
-        assert isinstance(math_task, (MATH, GSM8K))
+        assert isinstance(math_task, (Countdown)), f"Unsupported task: {math_task}, use old file for MATH, GSM8K"
         self.tokenizer = tokenizer
         self.math_task = math_task
         self.penalize_unfinished_response = penalize_unfinished_response
@@ -43,22 +43,24 @@ class MATHRewardFunction(RewardFunction):
     def __call__(
         self, query: str, response: str, dataset_instance: Dict[str, Any]
     ) -> Tuple[float, bool]:
-        pred_answer = self.math_task.extract_predicted_answer_from_text(
-            response, dataset_instance["problem"]
-        )
-        is_unfinished_response = pred_answer is None
-        if is_unfinished_response and self.penalize_unfinished_response:
-            return float(self.unfinished_response_penalty), is_unfinished_response
+        # pred_answer = self.math_task.extract_predicted_answer_from_text(
+        #     response, dataset_instance["problem"]
+        # )
+        # is_unfinished_response = pred_answer is None
+        # if is_unfinished_response and self.penalize_unfinished_response:
+        #     return float(self.unfinished_response_penalty), is_unfinished_response
 
-        gold_answer = dataset_instance["answer"]
-        reward = self.math_task.grade_answer(
-            given_answer=pred_answer,
-            ground_truth=gold_answer,
-            item=dataset_instance,
-            timeout=self.timeout,
+        if "</final_answer>" not in response:
+            return float(self.unfinished_response_penalty), True
+            
+        problem = dataset_instance["problem"]
+        target = dataset_instance["target"]
+        reward = self.math_task.verify_answer(
+            target=target,
+            nums=problem,
+            answer=response,
         )
-
-        return float(reward), is_unfinished_response
+        return float(reward), False
 
     def is_unfinished_response(
         self, response: str, dataset_instance: Dict[str, Any]
@@ -111,6 +113,8 @@ class MathEpisodeGenerator(EpisodeGeneratorWithRewardFunction):
             paths = self.extract_paths_from_tree(tree)
             all_rewards = []
             all_responses = []
+            query_token_ids_list = []
+            response_token_ids_list = []
             for path in paths:
                 # noinspection DuplicatedCode
                 assert len(path["node_chain"]) == 2, "Does not support multi-hop paths."
@@ -119,19 +123,6 @@ class MathEpisodeGenerator(EpisodeGeneratorWithRewardFunction):
                 query_text = path["node_chain"][0]["text"]
                 full_text = path["node_chain"][-1]["full_text"]
                 response_text = full_text[len(query_text) :]
-
-                try:
-                    num_reasoning_steps = self.compute_number_of_reasoning_steps(
-                        response_text
-                    )
-                    metrics.setdefault("num_reasoning_steps", []).append(
-                        num_reasoning_steps
-                    )
-                    metrics.setdefault("parse_failed", []).append(False)
-                except Exception as e:
-                    logger.error(f"Parsing reasoning steps failed {e}")
-                    logger.error(f"Response: `{response_text}`")
-                    metrics.setdefault("parse_failed", []).append(True)
 
                 if finish_reason != "length":
                     # Generation stopped because the model hit <eos>
@@ -190,14 +181,26 @@ class MathEpisodeGenerator(EpisodeGeneratorWithRewardFunction):
                     is_unfinished_response
                 )
 
+                all_rewards.append(float(reward))
+                query_token_ids_list.append(query_token_ids)
+                response_token_ids_list.append(response_token_ids)
+
+            # calculate rloo reward
+            sum_rewards = sum(all_rewards)
+            K_loo = len(all_rewards)
+            for query_token_ids, response_token_ids, reward in zip(
+                query_token_ids_list, response_token_ids_list, all_rewards
+            ):
+                rloo = (sum_rewards - reward) / (K_loo - 1)
+                normalized_reward = reward - rloo
                 episode = Episode(
                     query_token_ids=query_token_ids,
                     response_token_ids=response_token_ids,
-                    scores=float(reward),
+                    scores=normalized_reward,
                 )
 
+
                 episodes.append(episode)
-                all_rewards.append(float(reward))
 
             if len(all_rewards) > 0:
                 once_hit = any([r == 1.0 for r in all_rewards])
