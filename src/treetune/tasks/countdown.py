@@ -215,7 +215,7 @@ if __name__ == "__main__":
     # save to file
     data = {}
     data['train'] = train_data
-    data['val'] = val_data
+    data['validation'] = val_data
     data['test'] = test_data
     import json
     with open('./countdown.json', 'w') as f:

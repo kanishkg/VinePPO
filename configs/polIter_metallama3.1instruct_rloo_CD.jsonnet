@@ -5,7 +5,6 @@ local actor_tokenizer = {
     hf_model_name: hf_model_name,
 };
 
-// TODO: Update for countdown
 local cd_task = (import 'tasks/cd_basic.jsonnet') + {
     prepend_in_context_few_shot: false,
     ensure_fit_in_context_size: false,

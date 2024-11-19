@@ -34,7 +34,7 @@ local question_template = prompt_library.prompt_library.tree.question_template;
         answer_prefix: null,
 
         max_sequence_length: 2048,
-        max_question_length: 1512,
+        max_question_length: 512,
         question_template: question_template,
 
         fill_missing_episodes: true,
