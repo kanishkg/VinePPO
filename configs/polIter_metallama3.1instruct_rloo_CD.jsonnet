@@ -19,7 +19,7 @@ local total_num_iterations = 1000;
 local sampling_temperature = 0.7;
 
 (import 'gvar.jsonnet')
-+ (import 'prompt_library/cd.jsonnet')
++ (import 'prompt_library/cd_basic.jsonnet')
 + (import 'runtimes/policy_iteration.jsonnet')
 + (import 'episode_generators/cd_episode_generator.jsonnet')
 + (import 'trainers/rloo_cd.jsonnet')

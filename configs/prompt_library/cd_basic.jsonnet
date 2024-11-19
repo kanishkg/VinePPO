@@ -17,7 +17,7 @@ Step 3: 6*4=24
 
 Problem: {query}
 
-<answer> Let's think step by step.';
+<answer> Lets think step by step.';
 
 {
     prompt_library+: {

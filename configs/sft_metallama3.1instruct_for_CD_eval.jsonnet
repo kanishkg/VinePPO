@@ -57,7 +57,7 @@ local cd_train_inference_pipeline =
     };
 
 local cd_test_inference_pipeline =
-    math_inference_pipeline
+    cd_inference_pipeline
     + {
         dataset_split: 'test',
         dataset_portion: 1,
@@ -65,9 +65,20 @@ local cd_test_inference_pipeline =
     };
 
 local cd_validation_inference_pipeline =
-    math_inference_pipeline
+    cd_inference_pipeline
     + {
         dataset_split: 'validation',
         dataset_portion: 1,
         inference_name: 'validation',
     };
+
+{
+    inference_pipelines: [
+        cd_test_inference_pipeline,
+        cd_validation_inference_pipeline,
+        cd_train_inference_pipeline,
+    ],
+
+    evaluation_vllm_server: {},
+}
+
