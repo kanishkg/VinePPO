@@ -25,7 +25,7 @@ local question_template = prompt_library.prompt_library.tree.question_template;
         wait_until_memory_release: true,
 
         reward_function: {
-            type: 'cd_reward_function',
+            type: 'math_reward_function',
             penalize_unfinished_response: true,
             unfinished_response_penalty: 0.0,
             math_task: $.episode_generator.task,
