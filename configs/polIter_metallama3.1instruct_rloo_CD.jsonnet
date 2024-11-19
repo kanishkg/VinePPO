@@ -111,3 +111,4 @@ local sampling_temperature = 0.7;
 + (import 'sft_metallama3.1instruct_for_CD_eval.jsonnet')
 + (import 'trainers/lam1.jsonnet')
 + (import 'trainers/refKl0.0.jsonnet')
++ (import 'trainers/klLoss.jsonnet')
