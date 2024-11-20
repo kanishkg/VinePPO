@@ -264,7 +264,7 @@ class VLLMServer(FromParams):
             f" --seed {self.seed}"
             f" --swap-space {self.swap_space}"
             f" --gpu-memory-utilization {self.gpu_memory_utilization}"
-            f" --max-num-seqs 32"
+            f" --max-num-seqs {self.max_num_seqs}"
         )
         if gpu_idx is not None:
             command += f" --gpu-idx {gpu_idx}"
