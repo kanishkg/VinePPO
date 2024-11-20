@@ -25,7 +25,7 @@ local num_mc_rollouts = 9;
             guidance_llm: $.episode_generator.inference_strategy.guidance_llm,
 
             question_field: 'query',
-            question_template: '{query}',
+            question_template: '{p}',
 
             no_cache: true,
         },

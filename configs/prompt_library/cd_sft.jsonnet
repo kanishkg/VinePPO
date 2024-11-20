@@ -15,7 +15,7 @@ Step 2: 2*3=6
 Step 3: 6*4=24
 </final_answer>
 
-Problem: {query}
+Problem: {problem}
 
 <answer> Lets think step by step.';
 

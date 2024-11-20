@@ -39,7 +39,7 @@ local cd_inference_pipeline =
 
             guidance_llm: null,
             no_cache: true,
-            question_field: 'query',
+            question_field: 'problem',
         },
         task: (import 'tasks/cd_basic.jsonnet'),
         analyzers: [(import 'analyzers/task_performance.jsonnet')],

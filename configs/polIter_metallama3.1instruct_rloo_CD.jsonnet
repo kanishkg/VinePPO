@@ -77,7 +77,7 @@ local sampling_temperature = 0.7;
 
             guidance_llm: null,
 
-            question_field: 'query',
+            question_field: 'problem',
             question_template: $.prompt_library.tree.question_template,
 
             no_cache: true,
