@@ -290,6 +290,8 @@ class VLLMServer(FromParams):
             return
 
         logger.info(f"Stopping the server with pid {self.process.pid}...")
+        subprocess.run(['kill', str(self.process.pid)], check=False)
+        
         self.process.kill()
         time.sleep(3)
 
