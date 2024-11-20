@@ -140,7 +140,7 @@ class VLLMServer(FromParams):
         seed: int = 42,
         swap_space: int = 16,
         gpu_memory_utilization: float = 0.9,
-        max_num_seqs: int = 256,
+        max_num_seqs: int = 8,
         enable_prefix_caching: bool = False,
         disable_sliding_window: bool = False,
         disable_frontend_multiprocessing: bool = False,
