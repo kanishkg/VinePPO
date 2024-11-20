@@ -90,8 +90,8 @@ local sampling_temperature = 0.7;
         params+: { temperature: $.episode_generator.inference_strategy.node_expander.program_kwargs.temperature },
 
         actor_model+: { hf_model_name: $.episode_generator.initial_model_name_or_path },
-        critic_model+: { pretrained_backbone_model+: { hf_model_name: $.episode_generator.initial_model_name_or_path } },
-        reference_model+: { hf_model_name: $.episode_generator.initial_model_name_or_path },
+        // critic_model+: { pretrained_backbone_model+: { hf_model_name: $.episode_generator.initial_model_name_or_path } },
+        // reference_model+: { hf_model_name: $.episode_generator.initial_model_name_or_path },
 
         // To prevent OOM errors
         report_entropy: false,

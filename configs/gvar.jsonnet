@@ -1,6 +1,6 @@
 {
     global_vars: {
-        seed: std.parseInt(std.extVar('APP_SEED')),
+        seed: 42,
         debug_mode: false,
         dirs: {
             experiments: 'experiments',

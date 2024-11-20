@@ -65,7 +65,7 @@ local ds_stage_2_w_cpu_optimizer = (import '../deepspeed/zero_2.jsonnet') + {
             save_steps: 32,
             checkpoint_keep_steps: 32,
 
-            seed: std.parseInt(std.extVar('APP_SEED')),
+            seed: 43,
         },
 
         num_epochs_per_iteration: 1,
