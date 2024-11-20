@@ -221,7 +221,7 @@ class Countdown(Task):
 
     def _preprocess_example(self, example: Dict[str, Any]) -> Dict[str, Any]:
         question = example["input"].strip()
-        target = example["target"].strip()
+        target = example["target"]
         output = {}
         output.update({
             "problem": question,
