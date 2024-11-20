@@ -156,7 +156,7 @@ class TreeInferenceStrategy(InferenceStrategy):
                     exit(1)
 
         # Set the guidance LLM
-        # guidance.llm = self.guidance_llm_lazy.construct()
+        guidance.llm = self.guidance_llm_lazy.construct()
 
         self.node_expander.set_run_program(sem_run_program)
         self.answer_extractor.set_run_program(sem_run_program)

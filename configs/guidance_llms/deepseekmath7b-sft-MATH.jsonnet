@@ -1,3 +1,3 @@
 (import 'openai_vllm.jsonnet') + {
-    model: 'realtreetune/deepseekmath-7b-sft-MATH',
+    model: 'meta-llama/Llama-3.1-8B-Instruct',
 }

@@ -75,7 +75,8 @@ local sampling_temperature = 0.7;
                 node_key_name: 'text',
             },
 
-            guidance_llm: null,
+            guidance_llm: (import 'guidance_llms/metallama3.18binstruct.jsonnet') + { api_base: 'none' },
+
 
             question_field: 'problem',
             question_template: $.prompt_library.tree.question_template,
