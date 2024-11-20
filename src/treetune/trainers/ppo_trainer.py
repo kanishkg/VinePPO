@@ -433,15 +433,22 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
         see_memory_usage("Before cleaning up deepspeed from memory", force=True)
         self._destroy_ds_engine(actor_engine)
         del actor_engine
+        torch.cuda.empty_cache()  # Clear CUDA cache
         release_memory()
         if critic_engine is not None:
             self._destroy_ds_engine(critic_engine)
             del critic_engine
+            torch.cuda.empty_cache()  # Clear CUDA cache after critic deletion
             release_memory()
+            
+        if not self.cache_deepspeed_engines:
+            self.log_tensors_on_gpu()
+        # Force garbage collection
+        import gc
+        gc.collect()
+        torch.cuda.empty_cache()
         see_memory_usage("After cleaning up deepspeed from memory", force=True)
-        # if not self.cache_deepspeed_engines:
-        #     self.log_tensors_on_gpu()
-        
+
         path_to_latest_policy = temp_ckpt_path / "hf_pretrained"
         return path_to_latest_policy
 
