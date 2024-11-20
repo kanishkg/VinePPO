@@ -5,6 +5,9 @@ from typing import Any, Dict, List, Optional
 from datasets import (
     Dataset,
     DatasetDict,
+    IterableDataset,
+    IterableDatasetDict,
+    load_dataset,
 )
 
 from treetune import logging_utils
@@ -228,3 +231,10 @@ class Countdown(Task):
             "target": target,
         })
         return output
+    
+    def _load_data_source(
+        self,
+    ) -> Union[DatasetDict, Dataset, IterableDatasetDict, IterableDataset]:
+        dataset = load_dataset("json", data_files={"train": "data/cd_train.json", "validation": "data/cd_val.json", "test": "data/cd_test.json"})
+        return dataset
+

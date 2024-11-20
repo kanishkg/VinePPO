@@ -1,6 +1,6 @@
 local cd_task = {
     type: 'countdown',
-    load_dataset_dict: false,
+    load_dataset_dict: true,
     dataset_dict_path: 'data/countdown',
     few_shot_dataset_path: null,
     answer_prefix: null,
