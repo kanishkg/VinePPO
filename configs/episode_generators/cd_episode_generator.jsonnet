@@ -28,8 +28,8 @@ local question_template = prompt_library.prompt_library.tree.question_template;
         dataset_shuffle_before_portion: true,
         dataset_sample_with_replacement: false,
 
-        vllm_gpu_memory_utilization: 0.7,
-        vllm_min_available_gpu_memory_mb: 60 * 1024,
+        vllm_gpu_memory_utilization: 0.9,
+        vllm_min_available_gpu_memory_mb: 70 * 1024,
         wait_until_memory_release: true,
 
         reward_function: {
