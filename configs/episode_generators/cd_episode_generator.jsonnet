@@ -18,6 +18,7 @@ local question_template = prompt_library.prompt_library.tree.question_template;
         task: cd_task,
         vllm_server+: {
             swap_space: 64,
+            max_num_seqs: 8
         },
 
         append_bos_to_query: true,
