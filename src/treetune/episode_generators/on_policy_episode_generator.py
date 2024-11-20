@@ -36,7 +36,7 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
         task: Task,
         seed: int,
         initial_model_name_or_path: str,
-        vllm_gpu_memory_utilization: Union[float, str] = 0.95,
+        vllm_gpu_memory_utilization: Union[float, str] = 0.9,
         vllm_min_available_gpu_memory_mb: Optional[int] = None,
         wait_until_memory_release: bool = False,
         dataset_shuffle_on_each_iteration: bool = True,
