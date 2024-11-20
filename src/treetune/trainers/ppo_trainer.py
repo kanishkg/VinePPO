@@ -728,7 +728,9 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
                 # this iteration (aka the old values)
 
                 #### RLOOO
+                print(rewards.shape)
                 advantages = torch.zeros_like(shifted_actor_logprobs)
+                print(advantages.shape)
                 # advantages for a full sequence is the rewards broadcasted across timesteps
                 advantages = rewards.unsqueeze(-1).expand_as(advantages)
 
