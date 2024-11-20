@@ -7,6 +7,7 @@ import subprocess
 import time
 from pathlib import Path
 from typing import Optional, Union, Callable, Dict
+import signal
 
 import psutil
 import requests
@@ -280,9 +281,17 @@ class VLLMServer(FromParams):
         # Redirect both stdout and stderr to the log file if specified
         if log_path is not None:
             with log_path.open("w") as f:
-                self.process = subprocess.Popen(command, stdout=f, stderr=f)
+                self.process = subprocess.Popen(
+                    command,
+                    stdout=f,
+                    stderr=f,
+                    preexec_fn=os.setsid  # Add this line
+                )
         else:
-            self.process = subprocess.Popen(command)
+            self.process = subprocess.Popen(
+                command,
+                preexec_fn=os.setsid  # Add this line
+            )
 
     def stop_server(self):
         if self.process is None or self.process.poll() is not None:
@@ -290,7 +299,8 @@ class VLLMServer(FromParams):
             return
 
         logger.info(f"Stopping the server with pid {self.process.pid}...")
-        subprocess.run(['kill', str(self.process.pid)], check=False)
+        os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)  # Kill the process group
+        self.process.wait()
         
         self.process.kill()
         time.sleep(3)
