@@ -908,7 +908,7 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
         pg_losses = torch.max(pg_losses1, pg_losses2)
         pg_loss = masked_mean(pg_losses, action_mask)
 
-        if self.ppo_hparams.kl_penalty_loss_type is not None:
+        if self.ppo_hparams.kl_penalty_loss_type is not None and ref_logprobs is not None:
             assert ref_logprobs is not None
             ref_kl = self._compute_kl_penalty(
                 logprobs,
