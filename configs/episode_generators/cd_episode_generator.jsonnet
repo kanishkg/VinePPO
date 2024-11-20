@@ -28,7 +28,7 @@ local question_template = prompt_library.prompt_library.tree.question_template;
         dataset_sample_with_replacement: false,
 
         vllm_gpu_memory_utilization: 'auto',
-        vllm_min_available_gpu_memory_mb: 8 * 1024,
+        vllm_min_available_gpu_memory_mb: 24 * 1024,
         wait_until_memory_release: true,
 
         reward_function: {

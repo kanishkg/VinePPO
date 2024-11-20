@@ -41,7 +41,7 @@ local sampling_temperature = 0.7;
         dataset_num_samples_per_iteration: num_dataset_samples_per_iteration,
         total_num_iterations: $.num_iterations,
 
-        max_sequence_length: 2499,  // Increase the max_seq_len since the model context size is 4096
+        max_sequence_length: 2048,  // Increase the max_seq_len since the model context size is 4096
 
         save_generations_every_n_iteration: 50,
 
@@ -59,7 +59,7 @@ local sampling_temperature = 0.7;
                 program: $.prompt_library.tree.expansion.iid,
                 program_kwargs+: {
                     temperature: sampling_temperature,
-                    top_p: 0.9,
+                    top_p: 0.95,
                     max_tokens: 1568,
                     stop: '"\n\n\nProblem:"',
                 },
