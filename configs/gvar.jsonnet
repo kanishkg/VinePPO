@@ -3,7 +3,7 @@
         seed: 42,
         debug_mode: false,
         dirs: {
-            experiments: 'experiments',
+            experiments: '/scr/kanishkg/vine/experiments',
             data: 'data',
         },
     },
