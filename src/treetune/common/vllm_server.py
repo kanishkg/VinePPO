@@ -264,12 +264,12 @@ class VLLMServer(FromParams):
             f" --seed {self.seed}"
             f" --swap-space {self.swap_space}"
             f" --gpu-memory-utilization {self.gpu_memory_utilization}"
-            f" --max-num-seqs {self.max_num_seqs}"
+            f" --max-num-seqs 32"
         )
         if gpu_idx is not None:
             command += f" --gpu-idx {gpu_idx}"
-        if self.enable_prefix_caching:
-            command += " --enable-prefix-caching"
+        # if self.enable_prefix_caching:
+        command += " --enable-prefix-caching"
         if self.disable_sliding_window:
             command += " --disable-sliding-window"
         if self.max_model_len is not None:

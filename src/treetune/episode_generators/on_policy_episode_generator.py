@@ -452,7 +452,7 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
 
         # Initialize the inference strategy with the vLLM server URL
         inference_strategy_lazy = copy.deepcopy(self.inference_strategy_lazy)
-        if guidance_llm_kwargs is not None:
+        if guidance_llm_kwargs is not None and inference_strategy_lazy._params['guidance_llm'] is not None:
             inference_strategy_lazy._params["guidance_llm"].update(guidance_llm_kwargs)
         inference_strategy = inference_strategy_lazy.construct(
             result_dir=results_root_dir,
