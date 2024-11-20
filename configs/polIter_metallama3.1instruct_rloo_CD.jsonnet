@@ -26,7 +26,12 @@ local sampling_temperature = 0.7;
     episode_generator+: {
         // Override the task
         task: cd_task,
-        reward_function+: $.episode_generator.reward_function,
+        reward_function+: {
+        type: 'math_reward_function',
+        penalize_unfinished_response: true,
+        unfinished_response_penalty: 0.0,
+        math_task: cd_task,
+    },
         reasoning_step_delimiter: '',
         answer_prefix: null,
 

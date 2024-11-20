@@ -1,14 +1,21 @@
-local cd_task = (import '../tasks/cd_basic.jsonnet') + {
+local cd_task = {
+    type: 'countdown',
+    load_dataset_dict: true,
+    dataset_dict_path: 'data/countdown',
+    few_shot_dataset_path: null,
+    answer_prefix: null,
+    inplace_split_solution: false,
     prepend_in_context_few_shot: false,
     ensure_fit_in_context_size: false,
 };
 
-local prompt_library = (import '../prompt_library/cd_basic.jsonnet');
+local prompt_library = (import '../prompt_library/cd_sft.jsonnet');
 local question_template = prompt_library.prompt_library.tree.question_template;
 
 {
     episode_generator+: {
         type: 'math_episode_generator',
+        task: cd_task,
         vllm_server+: {
             swap_space: 32,
         },
@@ -28,7 +35,7 @@ local question_template = prompt_library.prompt_library.tree.question_template;
             type: 'math_reward_function',
             penalize_unfinished_response: true,
             unfinished_response_penalty: 0.0,
-            math_task: $.episode_generator.task,
+            math_task: cd_task,
         },
         reasoning_step_delimiter: null,
         answer_prefix: null,
@@ -39,6 +46,6 @@ local question_template = prompt_library.prompt_library.tree.question_template;
 
         fill_missing_episodes: true,
 
-        task: cd_task,
+
     },
 }
