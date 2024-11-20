@@ -430,23 +430,37 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
         self._clean_episodes(exclude=[temp_ckpt_path.name])
 
         # Clean up models and their optimizers from memory
+        logging.info("Cleaning up models from memory")
         see_memory_usage("Before cleaning up deepspeed from memory", force=True)
+        
+        # Clean up actor and its optimizer
+        if hasattr(actor_engine, 'optimizer'):
+            del actor_engine.optimizer._parameter_names
+            del actor_engine.optimizer.param_groups
+            del actor_engine.optimizer._grad_accs
+            del actor_engine.optimizer
         self._destroy_ds_engine(actor_engine)
         del actor_engine
-        torch.cuda.empty_cache()  # Clear CUDA cache
+        torch.cuda.empty_cache()
         release_memory()
+        
+        # Clean up critic and its optimizer 
         if critic_engine is not None:
+            if hasattr(critic_engine, 'optimizer'):
+                del critic_engine.optimizer._parameter_names  
+                del critic_engine.optimizer.param_groups
+                del critic_engine.optimizer._grad_accs
+                del critic_engine.optimizer
             self._destroy_ds_engine(critic_engine)
             del critic_engine
-            torch.cuda.empty_cache()  # Clear CUDA cache after critic deletion
+            torch.cuda.empty_cache()
             release_memory()
             
-        if not self.cache_deepspeed_engines:
-            self.log_tensors_on_gpu()
         # Force garbage collection
         import gc
         gc.collect()
         torch.cuda.empty_cache()
+        logging.info("Garbage collection done")
         see_memory_usage("After cleaning up deepspeed from memory", force=True)
 
         path_to_latest_policy = temp_ckpt_path / "hf_pretrained"
@@ -871,20 +885,8 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
                 The model inputs for the actor model. Contains the following keys:
                 - "input_ids": The input token ids, shape (`batch_size`, `max_seq_len`).
                 - "attention_mask": The attention mask, shape (`batch_size`, `max_seq_len`).
-                - "labels": The labels, shape (`batch_size`, `max_seq_len`).
+                - "labels": The labels, shape (`batch_size`, `max_seq_len-1`).
             shifted_labels_mask (`torch.LongTensor`):
-                The shifted labels mask (aka action_mask), shape (`batch_size`, `max_seq_len-1`).
-            old_logprobs (`torch.FloatTensor`):
-                The log probabilities of the actor model for the previous iteration,
-                shape (`batch_size`, `max_seq_len-1`).
-            advantages (`torch.FloatTensor`):
-                The advantages of the responses, shape (`batch_size`, `max_seq_len-1`).
-
-        Returns:
-            `torch.FloatTensor`: The actor loss.
-            `bool`: Whether the batch was skipped.
-            `Dict[str, torch.Tensor]`: Metrics from the training step.
-            `Optional[torch.FloatTensor]`: The approx_kls tensor.
         """
         # Switch to RL terminology for more clarity
         action_mask = shifted_labels_mask  # Shape: (batch_size, max_seq_len-1)
