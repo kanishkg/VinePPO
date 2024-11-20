@@ -9,6 +9,7 @@ from datasets import (
 
 from treetune import logging_utils
 from treetune.tasks import Task
+from treetune.tokenization_utils import Tokenizer
 
 logger = logging_utils.get_logger(__name__)
 
@@ -26,6 +27,14 @@ class Countdown(Task):
         context_size: Optional[int] = None,
         max_generation_tokens: Optional[int] = None,
         inplace_split_solution: bool = False,
+        few_shot_dataset_path: Optional[str] = None,
+        use_minerva_few_shot_prompt: bool = False,
+        use_gold_steps_for_few_shot: bool = False,
+        num_few_shot_examples: Optional[int] = None,
+        max_few_shot_problem_length: Optional[int] = None,
+        max_few_shot_solution_length: Optional[int] = None,
+        max_few_shot_num_steps: Optional[int] = None,
+        tokenizer: Optional[Tokenizer] = None,
         **kwargs,
     ):
         super().__init__(**kwargs)
