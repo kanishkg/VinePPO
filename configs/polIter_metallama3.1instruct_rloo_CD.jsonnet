@@ -10,7 +10,7 @@ local cd_task = (import 'tasks/cd_basic.jsonnet') + {
     ensure_fit_in_context_size: false,
 };
 
-local num_episodes_per_iteration = 512;
+local num_episodes_per_iteration = 64;
 local num_rollouts_per_sample = 8;
 local num_dataset_samples_per_iteration = num_episodes_per_iteration / num_rollouts_per_sample;
 local total_num_iterations = 1000;
@@ -48,8 +48,8 @@ local sampling_temperature = 0.7;
         inference_strategy: {
             type: 'cot',
 
-            max_concurrent_programs: 128,
-            max_concurrent_generations: 64,
+            max_concurrent_programs: 64,
+            max_concurrent_generations: 16,
 
             samples: num_rollouts_per_sample,
             max_depth: 100,  // Deprecated parameter. Doesn't do anything.
@@ -66,7 +66,7 @@ local sampling_temperature = 0.7;
                 node_text_template: '{chain_of_thought}',
 
                 // Needed to compute max_tokens on the fly
-                model_context_size: 4095,
+                model_context_size: 2048,
                 tokenizer: $.tokenizer,
             },
 
