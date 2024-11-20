@@ -1,4 +1,4 @@
-local num_samples = 16;
+local num_samples = 8;
 local temperature = 0.35;
 
 local tokenizer = {
@@ -27,7 +27,7 @@ local cd_inference_pipeline =
                 node_text_template: '{chain_of_thought}',
 
                 // Needed to compute max_tokens on the fly
-                model_context_size: 4095,
+                model_context_size: 2048,
                 tokenizer: tokenizer,
             },
             answer_extractor+: {
