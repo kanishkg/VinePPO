@@ -208,8 +208,9 @@ def load_jsonnet_config(config_paths: List[str]) -> JsonDict:
     config: Dict[str, Any] = json.loads(json_str)
 
     # Override the root directory, if an environment variable is set.
-    orig_directory = config.get("directory", "experiments")
-    config["directory"] = os.environ.get("APP_DIRECTORY", orig_directory)
+    # orig_directory = config.get("directory", "experiments")
+    # config["directory"] = os.environ.get("APP_DIRECTORY", orig_directory)
+    config["directory"] = "/scr/kanishkg/vine/experiments"
 
     return config
 

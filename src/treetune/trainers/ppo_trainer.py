@@ -225,7 +225,7 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
         if temp_checkpoint_dir is not None:
             self.temp_checkpoint_dir = Path(temp_checkpoint_dir)
         else:
-            self.temp_checkpoint_dir = get_repo_dir() / "temp_ppo_checkpoints"
+            self.temp_checkpoint_dir = get_repo_dir() / "/scr/kanishkg/vine/temp_ppo_checkpoints"
             logger.info(
                 f"No temporary checkpoint directory provided. Using {self.temp_checkpoint_dir}"
             )
