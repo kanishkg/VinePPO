@@ -289,6 +289,7 @@ class VLLMServer(FromParams):
             logger.info("Server is not running.")
             return
 
+        logger.info("Stopping the server...")
         self.process.kill()
         time.sleep(3)
 
