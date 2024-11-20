@@ -716,7 +716,6 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
             )
 
             # The `advantages` is computed for the actions. That's why they are of shape (batch_size, max_seq_len-1)
-            # Shape of `advantages`: (batch_size, max_seq_len-1)
 
             # The following are computed for the valid states (everything but last state).
             # Shape of `valid_values`: (batch_size, max_seq_len-1)
@@ -727,13 +726,20 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
 
                 # Note that this is the value of the critic model in the beginning of
                 # this iteration (aka the old values)
-                values = inputs[COLUMN_VALUES]  # Shape: (batch_size, max_seq_len)
-                valid_values = values[:, :-1]  # Shape: (batch_size, max_seq_len-1)
-                assert valid_values.shape == shifted_actor_logprobs.shape
-                valid_values = valid_values * shifted_labels_mask
-                advantages, returns = self._compute_advantages(
-                    valid_values, rewards, shifted_labels_mask
-                )
+
+                #### RLOOO
+                advantages = torch.zeros_like(shifted_actor_logprobs)
+                # advantages for a full sequence is the rewards broadcasted across timesteps
+                advantages = rewards.unsqueeze(-1).expand_as(advantages)
+
+                #### HIDDEN FOR RLOO
+                # values = inputs[COLUMN_VALUES]  # Shape: (batch_size, max_seq_len)
+                # valid_values = values[:, :-1]  # Shape: (batch_size, max_seq_len-1)
+                # assert valid_values.shape == shifted_actor_logprobs.shape
+                # valid_values = valid_values * shifted_labels_mask
+                # advantages, returns = self._compute_advantages(
+                #     valid_values, rewards, shifted_labels_mask
+                # )
             else:
                 precomputed_advantages = inputs[
                     "advantages"
