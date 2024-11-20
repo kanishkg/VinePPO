@@ -435,9 +435,6 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
         
         # Clean up actor and its optimizer
         if hasattr(actor_engine, 'optimizer'):
-            del actor_engine.optimizer._parameter_names
-            del actor_engine.optimizer.param_groups
-            del actor_engine.optimizer._grad_accs
             del actor_engine.optimizer
         self._destroy_ds_engine(actor_engine)
         del actor_engine
@@ -447,9 +444,6 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
         # Clean up critic and its optimizer 
         if critic_engine is not None:
             if hasattr(critic_engine, 'optimizer'):
-                del critic_engine.optimizer._parameter_names  
-                del critic_engine.optimizer.param_groups
-                del critic_engine.optimizer._grad_accs
                 del critic_engine.optimizer
             self._destroy_ds_engine(critic_engine)
             del critic_engine
