@@ -18,6 +18,7 @@ logger = logging_utils.get_logger(__name__)
 class Countdown(Task):
     def __init__(
         self,
+        prepend_in_context_few_shot: bool,
         use_original_format: bool = False,
         remove_calculator_expressions: bool = True,
         intermediate_step_delimiter: Optional[str] = "\n",
