@@ -728,12 +728,8 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
                 # this iteration (aka the old values)
 
                 #### RLOOO
-                print(rewards.shape)
-                advantages = torch.zeros_like(shifted_actor_logprobs)
-                print(advantages.shape)
-                # advantages for a full sequence is the rewards broadcasted across timesteps
-                advantages = rewards.unsqueeze(-1).expand_as(advantages)
-
+                advantages = rewards
+                returns = None
                 #### HIDDEN FOR RLOO
                 # values = inputs[COLUMN_VALUES]  # Shape: (batch_size, max_seq_len)
                 # valid_values = values[:, :-1]  # Shape: (batch_size, max_seq_len-1)
