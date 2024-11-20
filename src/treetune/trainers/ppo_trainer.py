@@ -439,9 +439,9 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
             del critic_engine
             release_memory()
         see_memory_usage("After cleaning up deepspeed from memory", force=True)
-        if not self.cache_deepspeed_engines:
-            self.log_tensors_on_gpu()
-
+        # if not self.cache_deepspeed_engines:
+        #     self.log_tensors_on_gpu()
+        
         path_to_latest_policy = temp_ckpt_path / "hf_pretrained"
         return path_to_latest_policy
 
