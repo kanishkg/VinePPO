@@ -21,6 +21,11 @@ class Countdown(Task):
         remove_calculator_expressions: bool = True,
         intermediate_step_delimiter: Optional[str] = "\n",
         answer_prefix: Optional[str] = None, 
+        ensure_fit_in_context_size: bool = False,
+        max_few_shot_dataset_size: Optional[int] = None,
+        context_size: Optional[int] = None,
+        max_generation_tokens: Optional[int] = None,
+        inplace_split_solution: bool = False,
         **kwargs,
     ):
         super().__init__(**kwargs)
