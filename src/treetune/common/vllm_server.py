@@ -268,8 +268,8 @@ class VLLMServer(FromParams):
         )
         if gpu_idx is not None:
             command += f" --gpu-idx {gpu_idx}"
-        # if self.enable_prefix_caching:
-        command += " --enable-prefix-caching"
+        if self.enable_prefix_caching:
+            command += " --enable-prefix-caching"
         if self.disable_sliding_window:
             command += " --disable-sliding-window"
         if self.max_model_len is not None:
