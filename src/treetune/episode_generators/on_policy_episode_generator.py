@@ -575,6 +575,8 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
         question_template = self.question_template
         max_question_length = self.max_question_length
         question_format_keys = []
+        print("======Dataset=====")
+        print(dataset)
         for column in dataset.column_names:
             if f"{{{column}}}" in self.question_template:
                 question_format_keys.append(column)
